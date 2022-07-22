@@ -1,10 +1,29 @@
+import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:produck/responsive/mobile_screen_layout.dart';
 import 'package:produck/responsive/responsive_layout_screen.dart';
 import 'package:produck/responsive/web_screen_layout.dart';
 import 'package:produck/utils/colors.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  
+  if(kIsWeb){
+    await Firebase.initializeApp(
+      options: const FirebaseOptions(
+        apiKey: 'AIzaSyB01vSlG2XiWcz7kFb8YSch30Iw4z4bNUU', 
+        appId: '1:526045306852:web:8eec29b7acf1068bb531f1', 
+        messagingSenderId: '526045306852', 
+        projectId: 'produck-9a362',
+        storageBucket: "produck-9a362.appspot.com")
+    );
+  }
+  else {
+    await Firebase.initializeApp();
+
+  }
+  
   runApp(const MyApp());
 }
 

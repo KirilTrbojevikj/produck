@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "526045306852",
+    "project_id": "produck-9a362",
+    "storage_bucket": "produck-9a362.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:526045306852:android:6db59c7e14bfb7b5b531f1",
+        "android_client_info": {
+          "package_name": "com.produck.produck"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "526045306852-3cab6foaaqqs3r0r67glic89v0cecarc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAAnN2GRqyCyhxcqVYRO1dBn-OjyTS1uJ8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "526045306852-3cab6foaaqqs3r0r67glic89v0cecarc.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "526045306852-0vreeghodbu1ksv984bp9rv4tdoe475r.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.produck.produck",
+                "app_store_id": "123456789"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
