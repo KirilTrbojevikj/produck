@@ -1,23 +1,27 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:produck/utils/colors.dart';
-import 'package:produck/widgets/text_field_input.dart';
+import 'package:flutter_svg/svg.dart';
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({Key? key}) : super(key: key);
+import '../utils/colors.dart';
+import '../widgets/text_field_input.dart';
+class SignupScreen extends StatefulWidget {
+  const SignupScreen({Key? key}) : super(key: key);
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  State<SignupScreen> createState() => _SignupScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _SignupScreenState extends State<SignupScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _bioController = TextEditingController();
+  final TextEditingController _usernameController = TextEditingController();
   @override
   void dispose() {
     super.dispose();
     _emailController.dispose();
     _passwordController.dispose();
+    _bioController.dispose();
+    _usernameController.dispose();
   }
   @override
   Widget build(BuildContext context) {
@@ -34,9 +38,35 @@ class _LoginScreenState extends State<LoginScreen> {
                 color: primaryColor,
                 height: 64,
               ),
-               const SizedBox(
-                   height: 64
-               ),
+              const SizedBox(
+                  height: 64
+              ),
+              Stack(
+                children: [
+                  CircleAvatar(
+                    radius: 64,
+                      backgroundImage: NetworkImage("https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Image_created_with_a_mobile_phone.png/1200px-Image_created_with_a_mobile_phone.png"),
+                  ),
+                  Positioned(
+                      bottom: -10,
+                      left: 80,
+                      child: IconButton(
+                        onPressed: () {},
+                        icon: const Icon(Icons.add_a_photo,),
+                  ),
+                  ),
+                ],
+              ),
+              const SizedBox(
+                  height: 64
+              ),
+              TextFieldInput(hitText: 'Enter your username',
+                textInputType: TextInputType.text,
+                textEditingController: _usernameController,
+              ),
+              const SizedBox(
+                height: 24,
+              ),
               TextFieldInput(hitText: 'Enter your email',
                 textInputType: TextInputType.emailAddress,
                 textEditingController: _emailController,
@@ -52,9 +82,16 @@ class _LoginScreenState extends State<LoginScreen> {
               const SizedBox(
                 height: 24,
               ),
+              TextFieldInput(hitText: 'Enter your bio',
+                textInputType: TextInputType.text,
+                textEditingController: _bioController,
+              ),
+              const SizedBox(
+                height: 24,
+              ),
               InkWell(
                 child: Container(
-                  child: const Text('Log in'),
+                  child: const Text('Sign up'),
                   width: double.infinity,
                   alignment: Alignment.center,
                   padding: const EdgeInsets.symmetric(vertical: 12,),
@@ -76,15 +113,15 @@ class _LoginScreenState extends State<LoginScreen> {
                   GestureDetector(
                     onTap: (){},
                     child: Container(
-                      child: const Text("Don't have an account?"),
+                      child: const Text("Already have an account?"),
                       padding: const EdgeInsets.symmetric(
                         vertical: 8,
                       ),
                     ),
                   ),
                   Container(
-                    child: const Text("Sign up", style: TextStyle(fontWeight: FontWeight.bold,
-                    ),
+                    child: const Text("Log in", style: TextStyle(fontWeight: FontWeight.bold,
+                      ),
                     ),
                     padding: const EdgeInsets.symmetric(
                       vertical: 8,
@@ -94,9 +131,9 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
 
             ],
-            ),
           ),
         ),
+      ),
     );
   }
 }
