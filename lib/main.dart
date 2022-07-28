@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:produck/responsive/mobile_screen_layout.dart';
 import 'package:produck/responsive/responsive_layout_screen.dart';
 import 'package:produck/responsive/web_screen_layout.dart';
+import 'package:produck/screens/login_screen.dart';
+import 'package:produck/screens/signup_screen.dart';
 import 'package:produck/utils/colors.dart';
 
 void main() async {
@@ -39,10 +41,11 @@ class MyApp extends StatelessWidget {
       theme: ThemeData.dark().copyWith(
         scaffoldBackgroundColor: mobileBackgroundColor,
       ),
-      home: const ResponsiveLayout(
-        mobileScreenLayout: MobileScreenLayout() ,
-        webScreenLayout: WebScreenLayout(),
-      ),
+       home: LoginScreen(),
+      // const ResponsiveLayout(
+      //   mobileScreenLayout: MobileScreenLayout() ,
+      //   webScreenLayout: WebScreenLayout(),
+      // ),
     );
   }
 }
