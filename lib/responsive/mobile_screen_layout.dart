@@ -45,6 +45,7 @@ class _MobileScreenLayoutState extends State<MobileScreenLayout>{
           Text('add'),
           Text('favourite'),
           Text('profile'),
+
         ],
         physics: NeverScrollableScrollPhysics(),
         controller: pageController,
