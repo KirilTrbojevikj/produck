@@ -1,13 +1,19 @@
-import 'dart:typed_data';
 
+import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:produck/resources/auth_methods.dart';
+import 'package:produck/responsive/responsive_layout_screen.dart';
+import 'package:produck/screens/login_screen.dart';
 import 'package:produck/utils/utils.dart';
-
+import '../responsive/mobile_screen_layout.dart';
+import '../responsive/web_screen_layout.dart';
 import '../utils/colors.dart';
 import '../widgets/text_field_input.dart';
+
+
+
 class SignupScreen extends StatefulWidget {
   const SignupScreen({Key? key}) : super(key: key);
 
@@ -22,6 +28,7 @@ class _SignupScreenState extends State<SignupScreen> {
   final TextEditingController _usernameController = TextEditingController();
   Uint8List? _image;
   bool _isLoading = false;
+
   @override
   void dispose() {
     super.dispose();
@@ -30,12 +37,14 @@ class _SignupScreenState extends State<SignupScreen> {
     _bioController.dispose();
     _usernameController.dispose();
   }
+
   void selectImage() async{
     Uint8List im = await pickImage(ImageSource.gallery);
     setState(() {
       _image = im;
     });
   }
+
   void signUpUser() async {
     setState((){
       _isLoading =true;
@@ -46,13 +55,27 @@ class _SignupScreenState extends State<SignupScreen> {
           bio: _bioController.text,
           file: _image!
       );
-    setState((){
+    setState(() {
       _isLoading =false;
     });
-      if ( res != 'success'){
-        showSnackBar(res, context);
-      }
 
+      if (res != 'success') {
+        showSnackBar(res, context);
+      } else {
+        Navigator.of(context).pushReplacement(
+            MaterialPageRoute(
+                builder: (context) => const ResponsiveLayout(
+                    webScreenLayout: WebScreenLayout(),
+                    mobileScreenLayout: MobileScreenLayout(),
+                ),
+            ),
+        );
+      }
+  }
+
+  void navigateToLogin() {
+    Navigator.of(context).push(
+        MaterialPageRoute(builder: (context) => const LoginScreen()));
   }
   @override
   Widget build(BuildContext context) {
@@ -151,7 +174,7 @@ class _SignupScreenState extends State<SignupScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   GestureDetector(
-                    onTap: (){},
+                    onTap: navigateToLogin,
                     child: Container(
                       padding: const EdgeInsets.symmetric(
                         vertical: 8,
