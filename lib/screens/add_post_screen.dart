@@ -2,8 +2,14 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+
+import 'package:produck/models/user.dart';
+import 'package:produck/providers/user_provider.dart';
+import 'package:produck/resources/firestore_methods.dart';
 import 'package:produck/utils/colors.dart';
 import 'package:produck/utils/utils.dart';
+import 'package:provider/provider.dart';
+
 
 class AddPostScreen extends StatefulWidget {
   const AddPostScreen({Key? key}) : super(key: key);
@@ -15,12 +21,64 @@ class AddPostScreen extends StatefulWidget {
 class _AddPostScreenState extends State<AddPostScreen> {
   Uint8List? _file;
 
+  final TextEditingController _descriptionController = TextEditingController();
+  bool _isLoading = false;
+
+  void PostImage(
+    String uid,
+    String username,
+    String profImage,
+  ) async {
+    setState(() {
+      _isLoading = true;
+    });
+    try {
+      String res = await FirestoreMethods().uploadPost(
+        _descriptionController.text,
+        _file!,
+        uid,
+        username,
+        profImage,
+      );
+
+      if (res == "success") {
+        setState(() {
+          _isLoading = false;
+        });
+        showSnackBar('Posted!', context);
+        clearImage();
+      } else {
+        setState(() {
+          _isLoading = false;
+        });
+        showSnackBar(res, context);
+      }
+    } catch (e) {
+      showSnackBar(e.toString(), context);
+    }
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _descriptionController.dispose();
+  }
+
+   void clearImage() {
+    setState(() {
+      _file = null;
+    });
+  }
+
+
   _selectImage(BuildContext context) async {
     return showDialog(
         context: context,
         builder: (context) {
           return SimpleDialog(
-            title: const Text('Create a review'),
+
+            title: const Text("Create a post"),
+
             children: [
               SimpleDialogOption(
                 padding: const EdgeInsets.all(20),
@@ -34,6 +92,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
                     _file = file;
                   });
                 },
+
               ),
               SimpleDialogOption(
                 padding: const EdgeInsets.all(20),
@@ -48,6 +107,14 @@ class _AddPostScreenState extends State<AddPostScreen> {
                   });
                 },
               ),
+              SimpleDialogOption(
+                padding: const EdgeInsets.all(20),
+                child: const Text('Cancel'),
+                onPressed: () async {
+                  Navigator.of(context).pop();
+
+                },
+              ),
             ],
           );
         });
@@ -55,6 +122,9 @@ class _AddPostScreenState extends State<AddPostScreen> {
 
   @override
   Widget build(BuildContext context) {
+
+    final User user = Provider.of<UserProvider>(context).getUser;
+
     return _file == null
         ? Center(
             child: IconButton(
@@ -67,13 +137,20 @@ class _AddPostScreenState extends State<AddPostScreen> {
               backgroundColor: mobileBackgroundColor,
               leading: IconButton(
                 icon: const Icon(Icons.arrow_back),
-                onPressed: () {},
+
+                onPressed: clearImage,
               ),
               title: const Text('Post to'),
               centerTitle: false,
               actions: [
                 TextButton(
-                  onPressed: () {},
+
+                  onPressed: () => PostImage(
+                    user.uid,
+                    user.username,
+                    user.photoUrl,
+                  ),
+
                   child: const Text(
                     'Post',
                     style: TextStyle(
@@ -87,20 +164,29 @@ class _AddPostScreenState extends State<AddPostScreen> {
             ),
             body: Column(
               children: [
+
+                _isLoading
+                    ? const LinearProgressIndicator()
+                    : const Padding(padding: EdgeInsets.only(top: 0.0)),
+                const Divider(),
+
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     CircleAvatar(
                       backgroundImage: NetworkImage(
-                        'https://images.unsplash.com/photo-1659193788664-f085e3076db8?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwyfHx8ZW58MHx8fHw%3D&auto=format&fit=crop&w=1000&q=60',
+
+                        user.photoUrl,
                       ),
                     ),
                     SizedBox(
-                      width: MediaQuery.of(context).size.width * 0.45,
-                      child: const TextField(
-                        decoration: InputDecoration(
-                          hintText: 'Write a review...',
+                      width: MediaQuery.of(context).size.width * 0.3,
+                      child: TextField(
+                        controller: _descriptionController,
+                        decoration: const InputDecoration(
+                          hintText: 'Write a title',
+
                           border: InputBorder.none,
                         ),
                         maxLines: 8,
@@ -114,8 +200,10 @@ class _AddPostScreenState extends State<AddPostScreen> {
                         child: Container(
                           decoration: BoxDecoration(
                             image: DecorationImage(
-                              image: NetworkImage(
-                                'https://images.unsplash.com/photo-1659193788664-f085e3076db8?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwyfHx8ZW58MHx8fHw%3D&auto=format&fit=crop&w=1000&q=60',
+
+                              image: MemoryImage(
+                                _file!,
+
                               ),
                               fit: BoxFit.fill,
                               alignment: FractionalOffset.topCenter,
