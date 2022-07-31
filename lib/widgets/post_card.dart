@@ -144,12 +144,12 @@ class PostCard extends StatelessWidget {
                     top: 8,
                   ),
                   child: RichText(
-                    text: TextSpan(
-                      style: const TextStyle(color: primaryColor),
+                    text: const TextSpan(
+                      style: TextStyle(color: primaryColor),
                       children: [
                         TextSpan(
                           text: 'username',
-                          style: const TextStyle(fontWeight: FontWeight.bold),
+                          style: TextStyle(fontWeight: FontWeight.bold),
                         ),
                         TextSpan(
                           text: 'Hey this is some desc to be replaced',
@@ -157,7 +157,25 @@ class PostCard extends StatelessWidget {
                       ],
                     ),
                   ),
-                )
+                ),
+                InkWell(
+                  onTap: () {},
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(vertical: 4),
+                    child: const Text(
+                      'View all 200 comments',
+                      style: TextStyle(fontSize: 16, color: secondaryColor),
+                    ),
+                  ),
+                ),
+
+                Container(
+                    padding: const EdgeInsets.symmetric(vertical: 4),
+                    child: const Text(
+                      '22/12/2021',
+                      style: TextStyle(fontSize: 16, color: secondaryColor),
+                    ),
+                  ),
               ],
             ),
           )
