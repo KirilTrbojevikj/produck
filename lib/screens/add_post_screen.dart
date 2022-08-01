@@ -186,7 +186,6 @@ class _AddPostScreenState extends State<AddPostScreen> {
                         controller: _descriptionController,
                         decoration: const InputDecoration(
                           hintText: 'Write a title',
-
                           border: InputBorder.none,
                         ),
                         maxLines: 8,
